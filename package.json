@@ -5,6 +5,7 @@
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
+    "assets": "capacitor-assets generate --iconBackgroundColor '#f1ebe1' --splashBackgroundColor '#f1ebe1' --iconBackgroundColorDark '#110b00' --splashBackgroundColorDark '#110b00'",
     "build": "ng build --configuration production && cap sync",
     "e2e": "ng e2e",
     "lint": "ng lint",
@@ -58,8 +59,8 @@
     "@types/jasmine": "~4.3.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~18.11.7",
-    "@typescript-eslint/eslint-plugin": "~5.43.0",
-    "@typescript-eslint/parser": "~5.43.0",
+    "@typescript-eslint/eslint-plugin": "~5.44.0",
+    "@typescript-eslint/parser": "~5.44.0",
     "eslint": "~8.28.0",
     "eslint-plugin-import": "~2.26.0",
     "eslint-plugin-jsdoc": "~39.6.2",
