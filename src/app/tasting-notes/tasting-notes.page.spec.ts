@@ -8,7 +8,7 @@ import { DataState, initialState } from '@app/store/reducers/data.reducer';
 import { TastingNotesPage } from './tasting-notes.page';
 import { selectNotes } from '@app/store';
 import { TastingNote } from '@app/models';
-import { notesPageLoaded } from '@app/store/actions';
+import { noteDeleted, notesPageLoaded } from '@app/store/actions';
 import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
 import { TastingNoteEditorModule } from './tasting-note-editor/tasting-note-editor.module';
 import { TastingNoteEditorComponent } from './tasting-note-editor/tasting-note-editor.component';
@@ -23,29 +23,27 @@ describe('TastingNotesPage', () => {
     nativeEl: {},
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      initializeTestData();
-      modal = createOverlayElementMock('Modal');
-      TestBed.configureTestingModule({
-        declarations: [TastingNotesPage],
-        imports: [IonicModule, TastingNoteEditorModule],
-        providers: [
-          { provide: ModalController, useFactory: () => createOverlayControllerMock('ModalController', modal) },
-          { provide: IonRouterOutlet, useValue: mockRouterOutlet },
-          provideMockStore<{ data: DataState }>({
-            initialState: { data: initialState },
-          }),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    initializeTestData();
+    modal = createOverlayElementMock('Modal');
+    TestBed.configureTestingModule({
+      declarations: [TastingNotesPage],
+      imports: [IonicModule, TastingNoteEditorModule],
+      providers: [
+        { provide: ModalController, useFactory: () => createOverlayControllerMock('ModalController', modal) },
+        { provide: IonRouterOutlet, useValue: mockRouterOutlet },
+        provideMockStore<{ data: DataState }>({
+          initialState: { data: initialState },
+        }),
+      ],
+    }).compileComponents();
 
-      const store = TestBed.inject(Store) as MockStore;
-      store.overrideSelector(selectNotes, testData);
+    const store = TestBed.inject(Store) as MockStore;
+    store.overrideSelector(selectNotes, testData);
 
-      fixture = TestBed.createComponent(TastingNotesPage);
-      component = fixture.componentInstance;
-    })
-  );
+    fixture = TestBed.createComponent(TastingNotesPage);
+    component = fixture.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -119,6 +117,33 @@ describe('TastingNotesPage', () => {
       click(item);
       tick();
       expect(modal.present).toHaveBeenCalledTimes(1);
+    }));
+  });
+
+  describe('deleting a note', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('dispatches a delete for the note', fakeAsync(() => {
+      const store = TestBed.inject(Store);
+      spyOn(store, 'dispatch');
+      const buttons = fixture.debugElement.queryAll(By.css('ion-item-option'));
+      click(buttons[1].nativeElement);
+      tick();
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith(
+        noteDeleted({
+          note: {
+            id: 42,
+            brand: 'Lipton',
+            name: 'Yellow Label',
+            notes: 'Overly acidic, highly tannic flavor',
+            rating: 1,
+            teaCategoryId: 3,
+          },
+        })
+      );
     }));
   });
 
