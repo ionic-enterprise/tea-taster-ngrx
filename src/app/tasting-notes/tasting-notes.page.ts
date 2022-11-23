@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TastingNote } from '@app/models';
 import { selectNotes } from '@app/store';
 import { noteDeleted, notesPageLoaded } from '@app/store/actions';
-import { IonRouterOutlet, ModalController } from '@ionic/angular';
+import { AlertController, IonList, IonRouterOutlet, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { TastingNoteEditorComponent } from './tasting-note-editor/tasting-note-editor.component';
@@ -13,9 +13,15 @@ import { TastingNoteEditorComponent } from './tasting-note-editor/tasting-note-e
   styleUrls: ['./tasting-notes.page.scss'],
 })
 export class TastingNotesPage implements OnInit {
+  @ViewChild(IonList, { static: true }) list: IonList;
   notes$: Observable<Array<TastingNote>>;
 
-  constructor(private modalController: ModalController, private routerOutlet: IonRouterOutlet, private store: Store) {}
+  constructor(
+    private alertController: AlertController,
+    private modalController: ModalController,
+    private routerOutlet: IonRouterOutlet,
+    private store: Store
+  ) {}
 
   ngOnInit() {
     this.store.dispatch(notesPageLoaded());
@@ -30,8 +36,24 @@ export class TastingNotesPage implements OnInit {
     return this.displayEditor(note);
   }
 
-  deleteNote(note: TastingNote): void {
-    this.store.dispatch(noteDeleted({ note }));
+  async deleteNote(note: TastingNote): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Remove Note',
+      subHeader: 'This action cannot be undone!',
+      message: 'Are you sure you want to remove this note?',
+      buttons: [
+        { text: 'Yes', role: 'yes' },
+        { text: 'No', role: 'no' },
+      ],
+    });
+    await alert.present();
+    const { role } = await alert.onDidDismiss();
+    if (role === 'yes') {
+      this.store.dispatch(noteDeleted({ note }));
+    }
+    if (this.list?.closeSlidingItems) {
+      this.list.closeSlidingItems();
+    }
   }
 
   private async displayEditor(note?: TastingNote): Promise<void> {

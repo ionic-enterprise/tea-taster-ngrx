@@ -2,7 +2,7 @@ import { waitForAsync, ComponentFixture, TestBed, fakeAsync, tick } from '@angul
 import { By } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { IonicModule, IonRouterOutlet, ModalController } from '@ionic/angular';
+import { AlertController, IonicModule, IonRouterOutlet, ModalController } from '@ionic/angular';
 
 import { DataState, initialState } from '@app/store/reducers/data.reducer';
 import { TastingNotesPage } from './tasting-notes.page';
@@ -16,6 +16,7 @@ import { TastingNoteEditorComponent } from './tasting-note-editor/tasting-note-e
 describe('TastingNotesPage', () => {
   let component: TastingNotesPage;
   let fixture: ComponentFixture<TastingNotesPage>;
+  let alert: HTMLIonAlertElement;
   let modal: HTMLIonModalElement;
   let testData: Array<TastingNote>;
 
@@ -25,11 +26,13 @@ describe('TastingNotesPage', () => {
 
   beforeEach(waitForAsync(() => {
     initializeTestData();
+    alert = createOverlayElementMock('Alert');
     modal = createOverlayElementMock('Modal');
     TestBed.configureTestingModule({
       declarations: [TastingNotesPage],
       imports: [IonicModule, TastingNoteEditorModule],
       providers: [
+        { provide: AlertController, useFactory: () => createOverlayControllerMock('AlertController', alert) },
         { provide: ModalController, useFactory: () => createOverlayControllerMock('ModalController', modal) },
         { provide: IonRouterOutlet, useValue: mockRouterOutlet },
         provideMockStore<{ data: DataState }>({
@@ -123,28 +126,57 @@ describe('TastingNotesPage', () => {
   describe('deleting a note', () => {
     beforeEach(() => {
       fixture.detectChanges();
+      (alert.onDidDismiss as jasmine.Spy).and.resolveTo({ role: 'unknown' });
     });
 
-    it('dispatches a delete for the note', fakeAsync(() => {
-      const store = TestBed.inject(Store);
-      spyOn(store, 'dispatch');
+    it('asks the user if they would like to remove the note', fakeAsync(() => {
       const buttons = fixture.debugElement.queryAll(By.css('ion-item-option'));
       click(buttons[1].nativeElement);
       tick();
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
-      expect(store.dispatch).toHaveBeenCalledWith(
-        noteDeleted({
-          note: {
-            id: 42,
-            brand: 'Lipton',
-            name: 'Yellow Label',
-            notes: 'Overly acidic, highly tannic flavor',
-            rating: 1,
-            teaCategoryId: 3,
-          },
-        })
-      );
+      expect(alert.present).toHaveBeenCalledTimes(1);
     }));
+
+    describe('when the user answers yes', () => {
+      beforeEach(() => {
+        (alert.onDidDismiss as jasmine.Spy).and.resolveTo({ role: 'yes' });
+      });
+
+      it('dispatches a delete for the note', fakeAsync(() => {
+        const store = TestBed.inject(Store);
+        spyOn(store, 'dispatch');
+        const buttons = fixture.debugElement.queryAll(By.css('ion-item-option'));
+        click(buttons[1].nativeElement);
+        tick();
+        expect(store.dispatch).toHaveBeenCalledTimes(1);
+        expect(store.dispatch).toHaveBeenCalledWith(
+          noteDeleted({
+            note: {
+              id: 42,
+              brand: 'Lipton',
+              name: 'Yellow Label',
+              notes: 'Overly acidic, highly tannic flavor',
+              rating: 1,
+              teaCategoryId: 3,
+            },
+          })
+        );
+      }));
+    });
+
+    describe('when the user answers no', () => {
+      beforeEach(() => {
+        (alert.onDidDismiss as jasmine.Spy).and.resolveTo({ role: 'no' });
+      });
+
+      it('does not dispatch a delete', fakeAsync(() => {
+        const store = TestBed.inject(Store);
+        spyOn(store, 'dispatch');
+        const buttons = fixture.debugElement.queryAll(By.css('ion-item-option'));
+        click(buttons[1].nativeElement);
+        tick();
+        expect(store.dispatch).not.toHaveBeenCalled();
+      }));
+    });
   });
 
   const click = (button: HTMLElement) => {

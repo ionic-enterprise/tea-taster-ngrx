@@ -11,18 +11,20 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-item-sliding *ngFor="let note of notes$ | async">
-    <ion-item (click)="updateNote(note)">
-      <ion-label>
-        <div>{{ note.brand }}</div>
-        <div>{{ note.name }}</div>
-      </ion-label>
-    </ion-item>
+  <ion-list>
+    <ion-item-sliding *ngFor="let note of notes$ | async">
+      <ion-item (click)="updateNote(note)">
+        <ion-label>
+          <div>{{ note.brand }}</div>
+          <div>{{ note.name }}</div>
+        </ion-label>
+      </ion-item>
 
-    <ion-item-options>
-      <ion-item-option color="danger" (click)="deleteNote(note)"> Delete </ion-item-option>
-    </ion-item-options>
-  </ion-item-sliding>
+      <ion-item-options>
+        <ion-item-option color="danger" (click)="deleteNote(note)"> Delete </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button data-testid="add-new-button" (click)="newNote()">
