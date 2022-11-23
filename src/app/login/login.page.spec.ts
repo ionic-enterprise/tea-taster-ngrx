@@ -13,30 +13,28 @@ describe('LoginPage', () => {
   let component: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [LoginPage],
-        imports: [FormsModule, IonicModule.forRoot()],
-        providers: [
-          provideMockStore<{ auth: AuthState }>({
-            initialState: { auth: initialState },
-          }),
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [LoginPage],
+      imports: [FormsModule, IonicModule.forRoot()],
+      providers: [
+        provideMockStore<{ auth: AuthState }>({
+          initialState: { auth: initialState },
+        }),
+      ],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(LoginPage);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    })
-  );
+    fixture = TestBed.createComponent(LoginPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('displays the title properly', () => {
-    const title = fixture.debugElement.query(By.css('ion-title'));
+    const title = fixture.debugElement.query(By.css('ion-card-title'));
     expect(title.nativeElement.textContent.trim()).toBe('Login');
   });
 
