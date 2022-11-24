@@ -124,9 +124,10 @@ describe('TastingNotesPage', () => {
   });
 
   describe('deleting a note', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       fixture.detectChanges();
-      (alert.onDidDismiss as jasmine.Spy).and.resolveTo({ role: 'unknown' });
+      await fixture.whenRenderingDone();
+      (alert.onDidDismiss as jasmine.Spy).and.resolveTo({ role: 'yes' });
     });
 
     it('asks the user if they would like to remove the note', fakeAsync(() => {

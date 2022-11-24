@@ -37,6 +37,16 @@ export class TastingNotesPage implements OnInit {
   }
 
   async deleteNote(note: TastingNote): Promise<void> {
+    if (await this.confirmDelete()) {
+      this.store.dispatch(noteDeleted({ note }));
+    } else {
+      if (this.list?.closeSlidingItems) {
+        this.list.closeSlidingItems();
+      }
+    }
+  }
+
+  private async confirmDelete(): Promise<boolean> {
     const alert = await this.alertController.create({
       header: 'Remove Note',
       subHeader: 'This action cannot be undone!',
@@ -48,12 +58,7 @@ export class TastingNotesPage implements OnInit {
     });
     await alert.present();
     const { role } = await alert.onDidDismiss();
-    if (role === 'yes') {
-      this.store.dispatch(noteDeleted({ note }));
-    }
-    if (this.list?.closeSlidingItems) {
-      this.list.closeSlidingItems();
-    }
+    return role === 'yes';
   }
 
   private async displayEditor(note?: TastingNote): Promise<void> {
