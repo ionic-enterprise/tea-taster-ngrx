@@ -5,6 +5,6 @@ export const createAuthenticationServiceMock = () =>
     login: Promise.resolve(),
     logout: Promise.resolve(),
     isAuthenticated: Promise.resolve(false),
-    onLogout: Promise.resolve(),
     getUserInfo: Promise.resolve(undefined),
+    getAuthResult: Promise.resolve(undefined),
   });

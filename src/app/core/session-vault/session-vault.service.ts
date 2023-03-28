@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { PinDialogComponent } from '@app/pin-dialog/pin-dialog.component';
 import { sessionLocked } from '@app/store/actions';
+import { AuthResult } from '@ionic-enterprise/auth';
 import { BrowserVault, DeviceSecurityType, Vault, VaultType } from '@ionic-enterprise/identity-vault';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { VaultFactoryService } from './vault-factory.service';
 
 export type UnlockMode = 'Device' | 'SessionPIN' | 'NeverLock' | 'ForceLogin';
+
+const vaultKey = 'auth-result';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +36,14 @@ export class SessionVaultService {
 
   async canUnlock(): Promise<boolean> {
     return !(await this.vault.isEmpty()) && (await this.vault.isLocked());
+  }
+
+  public getSession(): Promise<AuthResult | null> {
+    return this.vault.getValue<AuthResult>(vaultKey);
+  }
+
+  public setSession(value: AuthResult): Promise<void> {
+    return this.vault.setValue(vaultKey, value);
   }
 
   async clearSession(): Promise<void> {

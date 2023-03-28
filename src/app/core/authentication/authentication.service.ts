@@ -1,52 +1,90 @@
-import { Injectable } from '@angular/core';
-import { IonicAuth } from '@ionic-enterprise/auth';
+import { Injectable, NgZone } from '@angular/core';
+import { AuthConnect, AuthResult, CognitoProvider, ProviderOptions, TokenType } from '@ionic-enterprise/auth';
 import { Platform } from '@ionic/angular';
 
 import { mobileAuthConfig, webAuthConfig } from '@env/environment';
 import { User } from '@app/models';
 import { SessionVaultService } from '../session-vault/session-vault.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthenticationService extends IonicAuth {
+export class AuthenticationService {
+  public authenticationChange$: Observable<boolean>;
+  private authenticationChange: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  private readonly provider = new CognitoProvider();
+
+  private isNative;
+  private authOptions: ProviderOptions;
+  private authResult: AuthResult | null = null;
   private vaultService: SessionVaultService;
+  private initializing: Promise<void> | undefined;
 
   // @ts-ignore
-  constructor(vaultService: SessionVaultService, platform: Platform) {
-    const isCordovaApp = platform.is('cordova');
-    const config = isCordovaApp ? mobileAuthConfig : webAuthConfig;
-    config.tokenStorageProvider = vaultService.vault;
-    super(config);
+  constructor(vaultService: SessionVaultService, platform: Platform, private ngZone: NgZone) {
+    this.isNative = platform.is('hybrid');
+    this.authOptions = this.isNative ? mobileAuthConfig : webAuthConfig;
     this.vaultService = vaultService;
+    this.initialize();
+
+    this.authenticationChange$ = this.authenticationChange.asObservable();
+    this.isAuthenticated().then((authenticated) => this.onAuthChange(authenticated));
   }
 
-  async login(): Promise<void> {
-    try {
-      await super.login();
-    } catch (err) {
-      // This is to handle the password reset case for Azure AD
-      //  This only applicable to Azure AD.
-      console.log('login error:', +err);
-      const message: string = err.message;
-      // This is the error code returned by the Azure AD servers on failure.
-      if (message !== undefined && message.startsWith('AADB2C90118')) {
-        // The address you pass back is the custom user flow (policy) endpoint
-        await super.login(
-          'https://vikingsquad.b2clogin.com/vikingsquad.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_password_reset'
-        );
-      } else {
-        throw new Error(err.error);
-      }
+  public async login(): Promise<void> {
+    await this.initialize();
+    this.authResult = await AuthConnect.login(this.provider, this.authOptions);
+    await this.saveAuthResult(this.authResult);
+  }
+
+  public async logout(): Promise<void> {
+    await this.initialize();
+    if (this.authResult) {
+      await AuthConnect.logout(this.provider, this.authResult);
+      this.authResult = null;
+      await this.saveAuthResult(null);
     }
   }
 
-  async onLogout(): Promise<void> {
-    await this.vaultService.clearSession();
+  public async refreshAuth(authResult: AuthResult): Promise<AuthResult | null> {
+    let newAuthResult: AuthResult | null = null;
+    if (await AuthConnect.isRefreshTokenAvailable(authResult)) {
+      try {
+        newAuthResult = await AuthConnect.refreshSession(this.provider, authResult);
+      } catch (err) {
+        return null;
+      }
+      this.saveAuthResult(newAuthResult);
+    }
+
+    return newAuthResult;
+  }
+
+  public async getAuthResult(): Promise<AuthResult | null> {
+    let authResult = await this.vaultService.getSession();
+    if (authResult && (await AuthConnect.isAccessTokenExpired(authResult))) {
+      authResult = await this.refreshAuth(authResult);
+    }
+
+    return authResult;
+  }
+
+  public async isAuthenticated(): Promise<boolean> {
+    await this.initialize();
+    return !!(await this.getAuthResult());
+  }
+
+  public async getAccessToken(): Promise<string | undefined> {
+    await this.initialize();
+    const res = await this.getAuthResult();
+    return res?.accessToken;
   }
 
   async getUserInfo(): Promise<User | undefined> {
-    const idToken = await this.getIdToken();
+    const res = await this.getAuthResult();
+    const idToken = (await AuthConnect.decodeToken(TokenType.id, res)) as any;
     if (!idToken) {
       return;
     }
@@ -62,5 +100,43 @@ export class AuthenticationService extends IonicAuth {
       firstName: idToken.firstName,
       lastName: idToken.lastName,
     };
+  }
+
+  private initialize(): Promise<void> {
+    if (!this.initializing) {
+      this.initializing = new Promise((resolve) => {
+        this.setup().then(() => resolve());
+      });
+    }
+    return this.initializing;
+  }
+
+  private setup(): Promise<void> {
+    return AuthConnect.setup({
+      platform: this.isNative ? 'capacitor' : 'web',
+      logLevel: 'DEBUG',
+      ios: {
+        webView: 'private',
+      },
+      web: {
+        uiMode: 'popup',
+        authFlow: 'implicit',
+      },
+    });
+  }
+
+  private async onAuthChange(isAuthenticated: boolean): Promise<void> {
+    this.ngZone.run(() => {
+      this.authenticationChange.next(isAuthenticated);
+    });
+  }
+
+  private async saveAuthResult(authResult: AuthResult | null): Promise<void> {
+    if (authResult) {
+      await this.vaultService.setSession(authResult);
+    } else {
+      await this.vaultService.clearSession();
+    }
+    this.onAuthChange(!!authResult);
   }
 }
