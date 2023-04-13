@@ -1,6 +1,6 @@
 # Tea Taster
 
-An application for storing tea tasting notes. This application is a demo of using [NgRx](https://ngrx.io) with Ionic Angular.
+An application for storing tea tasting notes. This application is a demo of using [NgRx](https://ngrx.io) with Ionic Angular, Identity Vault, and Auth Connect.
 
 ## Building
 
