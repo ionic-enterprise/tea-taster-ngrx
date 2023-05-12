@@ -65,7 +65,6 @@ export class TastingNotesPage implements OnInit {
     const opt = {
       component: TastingNoteEditorComponent,
       backdropDismiss: false,
-      swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
     };
 

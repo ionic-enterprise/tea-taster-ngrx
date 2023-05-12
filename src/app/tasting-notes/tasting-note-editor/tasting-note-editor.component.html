@@ -15,16 +15,29 @@
 <ion-content>
   <form #notesEditorForm="ngForm">
     <ion-item>
-      <ion-label position="floating">Brand</ion-label>
-      <ion-input id="brand-input" name="brand" [(ngModel)]="brand" #brandInput="ngModel" required></ion-input>
+      <ion-input
+        id="brand-input"
+        name="brand"
+        [(ngModel)]="brand"
+        #brandInput="ngModel"
+        label="Brand"
+        labelPlacement="floating"
+        required
+      ></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Name</ion-label>
-      <ion-input id="name-input" name="name" [(ngModel)]="name" #nameInput="ngModel" required></ion-input>
+      <ion-input
+        id="name-input"
+        name="name"
+        [(ngModel)]="name"
+        #nameInput="ngModel"
+        label="Name"
+        labelPlacement="floating"
+        required
+      ></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Type</ion-label>
-      <ion-select name="tea-type-select" [(ngModel)]="teaCategoryId" #teaTypeSelect="ngModel" required>
+      <ion-select name="tea-type-select" [(ngModel)]="teaCategoryId" #teaTypeSelect="ngModel" label="Type" required>
         <ion-select-option *ngFor="let t of teaCategories$ | async" value="{{ t.id }}">{{ t.name }}</ion-select-option>
       </ion-select>
     </ion-item>
@@ -33,13 +46,14 @@
       <app-rating [(ngModel)]="rating" id="rating-input" name="rating" #ratingInput="ngModel" required></app-rating>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Notes</ion-label>
       <ion-textarea
         id="notes-textbox"
         name="notes"
         [(ngModel)]="notes"
         #notesInput="ngModel"
         rows="5"
+        label="Notes"
+        labelPlacement="floating"
         required
       ></ion-textarea>
     </ion-item>

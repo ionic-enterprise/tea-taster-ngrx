@@ -7,8 +7,7 @@
         </ion-list-header>
 
         <ion-item *ngFor="let unlockMode of unlockModes">
-          <ion-label>{{ unlockMode.label }}</ion-label>
-          <ion-radio [value]="unlockMode.mode"></ion-radio>
+          <ion-radio [value]="unlockMode.mode">{{unlockMode.label}}</ion-radio>
         </ion-item>
       </ion-radio-group>
     </ion-list>

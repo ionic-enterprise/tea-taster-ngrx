@@ -83,7 +83,6 @@ describe('TastingNotesPage', () => {
       expect(modalController.create).toHaveBeenCalledWith({
         component: TastingNoteEditorComponent,
         backdropDismiss: false,
-        swipeToClose: true,
         presentingElement: mockRouterOutlet.nativeEl as any,
       });
     });
@@ -109,7 +108,6 @@ describe('TastingNotesPage', () => {
       expect(modalController.create).toHaveBeenCalledWith({
         component: TastingNoteEditorComponent,
         backdropDismiss: false,
-        swipeToClose: true,
         presentingElement: mockRouterOutlet.nativeEl as any,
         componentProps: { note: testData[0] },
       });
