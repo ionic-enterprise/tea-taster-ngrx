@@ -8,7 +8,6 @@ import { PinDialogComponent } from './pin-dialog.component';
 @NgModule({
   declarations: [PinDialogComponent],
   exports: [PinDialogComponent],
-  entryComponents: [PinDialogComponent],
   imports: [CommonModule, FormsModule, IonicModule],
 })
 export class PinDialogComponentModule {}
