@@ -1,7 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { PinDialogComponent } from '@app/pin-dialog/pin-dialog.component';
 import { sessionLocked } from '@app/store/actions';
-import { DeviceSecurityType, Vault, VaultType } from '@ionic-enterprise/identity-vault';
+import {
+  BiometricPermissionState,
+  Device,
+  DeviceSecurityType,
+  Vault,
+  VaultType,
+} from '@ionic-enterprise/identity-vault';
 import { ModalController, Platform } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -66,7 +72,7 @@ describe('SessionVaultService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('setUnlockType', () => {
+  describe('setUnlockMode', () => {
     [
       {
         unlockMode: 'Device',
@@ -100,6 +106,32 @@ describe('SessionVaultService', () => {
         expect(mockVault.updateConfig).toHaveBeenCalledWith(expectedConfig);
       })
     );
+
+    describe('when using device unlock', () => {
+      it('provisions FaceID permissions if needed', async () => {
+        spyOn(Device, 'isBiometricsAllowed').and.returnValue(Promise.resolve(BiometricPermissionState.Prompt));
+        spyOn(Device, 'showBiometricPrompt').and.returnValue(Promise.resolve());
+        await service.setUnlockMode('Device');
+        expect(Device.showBiometricPrompt).toHaveBeenCalledTimes(1);
+        expect(Device.showBiometricPrompt).toHaveBeenCalledWith({
+          iosBiometricsLocalizedReason: 'Authenticate to continue',
+        });
+      });
+
+      it('does not provision FaceID permissions if it was previously denied', async () => {
+        spyOn(Device, 'isBiometricsAllowed').and.returnValue(Promise.resolve(BiometricPermissionState.Denied));
+        spyOn(Device, 'showBiometricPrompt').and.returnValue(Promise.resolve());
+        await service.setUnlockMode('Device');
+        expect(Device.showBiometricPrompt).not.toHaveBeenCalled();
+      });
+
+      it('does not provision FaceID permissions if it was previously granted', async () => {
+        spyOn(Device, 'isBiometricsAllowed').and.returnValue(Promise.resolve(BiometricPermissionState.Granted));
+        spyOn(Device, 'showBiometricPrompt').and.returnValue(Promise.resolve());
+        await service.setUnlockMode('Device');
+        expect(Device.showBiometricPrompt).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe('disable locking', () => {

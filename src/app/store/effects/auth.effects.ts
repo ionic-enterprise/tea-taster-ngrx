@@ -98,11 +98,11 @@ export class AuthEffects {
 
   private async performLogin(mode: UnlockMode): Promise<void> {
     await this.sessionVault.clearSession();
-    if (mode) {
-      await this.sessionVault.setUnlockMode(mode);
-    }
     await this.sessionVault.disableLocking();
     await this.auth.login();
     await this.sessionVault.enableLocking();
+    if (mode) {
+      await this.sessionVault.setUnlockMode(mode);
+    }
   }
 }

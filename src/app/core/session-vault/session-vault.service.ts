@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 import { PinDialogComponent } from '@app/pin-dialog/pin-dialog.component';
 import { sessionLocked } from '@app/store/actions';
 import { AuthResult } from '@ionic-enterprise/auth';
-import { BrowserVault, DeviceSecurityType, Vault, VaultType } from '@ionic-enterprise/identity-vault';
+import {
+  BiometricPermissionState,
+  BrowserVault,
+  Device,
+  DeviceSecurityType,
+  Vault,
+  VaultType,
+} from '@ionic-enterprise/identity-vault';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { VaultFactoryService } from './vault-factory.service';
@@ -76,12 +83,13 @@ export class SessionVaultService {
     });
   }
 
-  setUnlockMode(unlockMode: UnlockMode): Promise<void> {
+  async setUnlockMode(unlockMode: UnlockMode): Promise<void> {
     let type: VaultType;
     let deviceSecurityType: DeviceSecurityType;
 
     switch (unlockMode) {
       case 'Device':
+        await this.provision();
         type = VaultType.DeviceSecurity;
         deviceSecurityType = DeviceSecurityType.Both;
         break;
@@ -124,5 +132,11 @@ export class SessionVaultService {
     dlg.present();
     const { data } = await dlg.onDidDismiss();
     this.vault.setCustomPasscode(data || '');
+  }
+
+  private async provision(): Promise<void> {
+    if ((await Device.isBiometricsAllowed()) === BiometricPermissionState.Prompt) {
+      await Device.showBiometricPrompt({ iosBiometricsLocalizedReason: 'Authenticate to continue' });
+    }
   }
 }
