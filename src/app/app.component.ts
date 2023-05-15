@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     Device.setHideScreenOnBackground(true);
     SplashScreen.hide();
-    if (!(this.platform.is('hybrid') && (await this.session.canUnlock()))) {
+    if (!this.platform.is('hybrid') || (!(await this.session.isEmpty()) && !(await this.session.isLocked()))) {
       this.store.dispatch(startup());
     }
   }

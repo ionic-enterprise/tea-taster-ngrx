@@ -30,7 +30,6 @@ export class AuthenticationService {
     this.initialize();
 
     this.authenticationChange$ = this.authenticationChange.asObservable();
-    this.isAuthenticated().then((authenticated) => this.onAuthChange(authenticated));
   }
 
   public async login(): Promise<void> {
@@ -63,12 +62,12 @@ export class AuthenticationService {
   }
 
   public async getAuthResult(): Promise<AuthResult | null> {
-    let authResult = await this.vaultService.getSession();
-    if (authResult && (await AuthConnect.isAccessTokenExpired(authResult))) {
-      authResult = await this.refreshAuth(authResult);
+    this.authResult = await this.vaultService.getSession();
+    if (this.authResult && (await AuthConnect.isAccessTokenExpired(this.authResult))) {
+      this.authResult = await this.refreshAuth(this.authResult);
     }
 
-    return authResult;
+    return this.authResult;
   }
 
   public async isAuthenticated(): Promise<boolean> {

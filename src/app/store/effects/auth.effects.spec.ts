@@ -73,6 +73,15 @@ describe('AuthEffects', () => {
       });
     });
 
+    it('disables locking', (done) => {
+      const vault = TestBed.inject(SessionVaultService);
+      actions$ = of(login({ mode: 'ForceLogin' }));
+      effects.login$.subscribe(() => {
+        expect(vault.disableLocking).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
     it('performs a login operation', (done) => {
       const auth = TestBed.inject(AuthenticationService);
       actions$ = of(login({ mode: 'ForceLogin' }));
@@ -84,6 +93,15 @@ describe('AuthEffects', () => {
     });
 
     describe('on login success', () => {
+      it('enables locking', (done) => {
+        const vault = TestBed.inject(SessionVaultService);
+        actions$ = of(login({ mode: 'ForceLogin' }));
+        effects.login$.subscribe(() => {
+          expect(vault.enableLocking).toHaveBeenCalledTimes(1);
+          done();
+        });
+      });
+
       it('gets the user information', (done) => {
         const auth = TestBed.inject(AuthenticationService);
         actions$ = of(login({}));
@@ -123,6 +141,15 @@ describe('AuthEffects', () => {
       beforeEach(() => {
         const auth = TestBed.inject(AuthenticationService);
         (auth.login as any).and.returnValue(Promise.reject(new Error('the server is blowing chunks')));
+      });
+
+      it('does not enable locking', (done) => {
+        const vault = TestBed.inject(SessionVaultService);
+        actions$ = of(login({ mode: 'ForceLogin' }));
+        effects.login$.subscribe(() => {
+          expect(vault.enableLocking).not.toHaveBeenCalled();
+          done();
+        });
       });
 
       it('dispatches the login failure event', (done) => {

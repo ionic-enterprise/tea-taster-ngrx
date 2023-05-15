@@ -34,6 +34,14 @@ describe('SessionVaultService', () => {
       (callback: (flag: boolean) => Promise<void>) => (onPassocodeRequestedCallback = callback)
     );
     (mockVault.lock as jasmine.Spy).and.callFake(() => onLockCallback());
+    mockVault.config = {
+      key: 'io.ionic.teattesterngrx',
+      type: VaultType.SecureStorage,
+      lockAfterBackgrounded: 3000,
+      shouldClearVaultAfterTooManyFailedAttempts: true,
+      customPasscodeInvalidUnlockAttempts: 2,
+      unlockVaultOnLoad: false,
+    };
     modal = createOverlayElementMock('Modal');
     TestBed.configureTestingModule({
       providers: [
@@ -92,6 +100,28 @@ describe('SessionVaultService', () => {
         expect(mockVault.updateConfig).toHaveBeenCalledWith(expectedConfig);
       })
     );
+  });
+
+  describe('disable locking', () => {
+    it('updates the lock after value to null', async () => {
+      await service.disableLocking();
+      expect(mockVault.updateConfig).toHaveBeenCalledTimes(1);
+      expect(mockVault.updateConfig).toHaveBeenCalledWith({
+        ...mockVault.config,
+        lockAfterBackgrounded: null,
+      });
+    });
+  });
+
+  describe('enable locking', () => {
+    it('updates the lock after value to 5 seconds', async () => {
+      await service.enableLocking();
+      expect(mockVault.updateConfig).toHaveBeenCalledTimes(1);
+      expect(mockVault.updateConfig).toHaveBeenCalledWith({
+        ...mockVault.config,
+        lockAfterBackgrounded: 5000,
+      });
+    });
   });
 
   describe('clear session', () => {

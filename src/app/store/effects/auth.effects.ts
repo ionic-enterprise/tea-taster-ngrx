@@ -101,6 +101,8 @@ export class AuthEffects {
     if (mode) {
       await this.sessionVault.setUnlockMode(mode);
     }
+    await this.sessionVault.disableLocking();
     await this.auth.login();
+    await this.sessionVault.enableLocking();
   }
 }

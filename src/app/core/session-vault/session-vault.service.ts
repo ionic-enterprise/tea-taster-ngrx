@@ -19,7 +19,7 @@ export class SessionVaultService {
 
   constructor(private modalController: ModalController, store: Store, vaultFactory: VaultFactoryService) {
     this.vault = vaultFactory.create({
-      key: 'com.kensodemann.teataster',
+      key: 'io.ionic.teatasterngrx',
       type: VaultType.SecureStorage,
       lockAfterBackgrounded: 5000,
       shouldClearVaultAfterTooManyFailedAttempts: true,
@@ -50,12 +50,30 @@ export class SessionVaultService {
     return this.vault.clear();
   }
 
+  isEmpty(): Promise<boolean> {
+    return this.vault.isEmpty();
+  }
+
   isLocked(): Promise<boolean> {
     return this.vault.isLocked();
   }
 
   unlock(): Promise<void> {
     return this.vault.unlock();
+  }
+
+  disableLocking(): Promise<void> {
+    return this.vault.updateConfig({
+      ...this.vault.config,
+      lockAfterBackgrounded: null,
+    });
+  }
+
+  enableLocking(): Promise<void> {
+    return this.vault.updateConfig({
+      ...this.vault.config,
+      lockAfterBackgrounded: 5000,
+    });
   }
 
   setUnlockMode(unlockMode: UnlockMode): Promise<void> {
