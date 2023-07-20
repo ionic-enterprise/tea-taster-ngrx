@@ -13,7 +13,10 @@ import { Observable } from 'rxjs';
 export class TeaPage implements OnInit {
   teas$: Observable<Array<Array<Tea>>>;
 
-  constructor(private navController: NavController, private store: Store) {}
+  constructor(
+    private navController: NavController,
+    private store: Store,
+  ) {}
 
   ngOnInit() {
     this.teas$ = this.store.select(selectTeasMatrix);

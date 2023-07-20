@@ -157,7 +157,7 @@ describe('TastingNotesPage', () => {
               rating: 1,
               teaCategoryId: 3,
             },
-          })
+          }),
         );
       }));
     });

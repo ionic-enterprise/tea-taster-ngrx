@@ -24,7 +24,11 @@ const vaultKey = 'auth-result';
 export class SessionVaultService {
   vault: Vault | BrowserVault;
 
-  constructor(private modalController: ModalController, store: Store, vaultFactory: VaultFactoryService) {
+  constructor(
+    private modalController: ModalController,
+    store: Store,
+    vaultFactory: VaultFactoryService,
+  ) {
     this.vault = vaultFactory.create({
       key: 'io.ionic.teatasterngrx',
       type: VaultType.SecureStorage,
@@ -37,7 +41,7 @@ export class SessionVaultService {
     this.vault.onLock(() => store.dispatch(sessionLocked()));
 
     this.vault.onPasscodeRequested(async (isPasscodeSetRequest: boolean) =>
-      this.onPasscodeRequest(isPasscodeSetRequest)
+      this.onPasscodeRequest(isPasscodeSetRequest),
     );
   }
 

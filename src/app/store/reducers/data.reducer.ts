@@ -24,7 +24,7 @@ export const reducer = createReducer(
       ...state,
       errorMessage: '',
       loading: true,
-    })
+    }),
   ),
   on(
     Actions.unlockSessionSuccess,
@@ -32,7 +32,7 @@ export const reducer = createReducer(
       ...state,
       loading: true,
       errorMessage: '',
-    })
+    }),
   ),
   on(
     Actions.initialLoadSuccess,
@@ -40,7 +40,7 @@ export const reducer = createReducer(
       ...state,
       loading: false,
       teas: [...teas],
-    })
+    }),
   ),
   on(
     Actions.initialLoadFailure,
@@ -48,7 +48,7 @@ export const reducer = createReducer(
       ...state,
       loading: false,
       errorMessage,
-    })
+    }),
   ),
   on(
     Actions.logoutSuccess,
@@ -56,7 +56,7 @@ export const reducer = createReducer(
       ...state,
       notes: [],
       teas: [],
-    })
+    }),
   ),
   on(Actions.teaDetailsChangeRatingSuccess, (state, { tea }): DataState => {
     const teas = [...state.teas];
@@ -71,7 +71,7 @@ export const reducer = createReducer(
     (state, { errorMessage }): DataState => ({
       ...state,
       errorMessage,
-    })
+    }),
   ),
   on(
     Actions.notesPageLoaded,
@@ -79,7 +79,7 @@ export const reducer = createReducer(
       ...state,
       loading: true,
       errorMessage: '',
-    })
+    }),
   ),
   on(
     Actions.notesPageLoadedSuccess,
@@ -87,7 +87,7 @@ export const reducer = createReducer(
       ...state,
       loading: false,
       notes,
-    })
+    }),
   ),
   on(
     Actions.notesPageLoadedFailure,
@@ -95,7 +95,7 @@ export const reducer = createReducer(
       ...state,
       loading: false,
       errorMessage,
-    })
+    }),
   ),
   on(
     Actions.noteSaved,
@@ -103,7 +103,7 @@ export const reducer = createReducer(
       ...state,
       loading: true,
       errorMessage: '',
-    })
+    }),
   ),
   on(Actions.noteSavedSuccess, (state, { note }): DataState => {
     const notes = [...state.notes];
@@ -125,7 +125,7 @@ export const reducer = createReducer(
       ...state,
       loading: false,
       errorMessage,
-    })
+    }),
   ),
   on(
     Actions.noteDeleted,
@@ -133,7 +133,7 @@ export const reducer = createReducer(
       ...state,
       loading: true,
       errorMessage: '',
-    })
+    }),
   ),
   on(Actions.noteDeletedSuccess, (state, { note }): DataState => {
     const notes = [...state.notes];
@@ -153,6 +153,6 @@ export const reducer = createReducer(
       ...state,
       loading: false,
       errorMessage,
-    })
-  )
+    }),
+  ),
 );

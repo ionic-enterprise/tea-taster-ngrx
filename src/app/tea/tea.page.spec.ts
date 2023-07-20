@@ -16,28 +16,26 @@ describe('TeaPage', () => {
   let fixture: ComponentFixture<TeaPage>;
   let teas: Array<Tea>;
 
-  beforeEach(
-    waitForAsync(() => {
-      initializeTestData();
-      TestBed.configureTestingModule({
-        declarations: [TeaPage],
-        imports: [IonicModule.forRoot()],
-        providers: [
-          provideMockStore<{ auth: AuthState; data: DataState }>({
-            initialState: { auth: initialAuthState, data: initialDataState },
-          }),
-          { provide: NavController, useFactory: createNavControllerMock },
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    initializeTestData();
+    TestBed.configureTestingModule({
+      declarations: [TeaPage],
+      imports: [IonicModule.forRoot()],
+      providers: [
+        provideMockStore<{ auth: AuthState; data: DataState }>({
+          initialState: { auth: initialAuthState, data: initialDataState },
+        }),
+        { provide: NavController, useFactory: createNavControllerMock },
+      ],
+    }).compileComponents();
 
-      const store = TestBed.inject(Store) as MockStore;
-      store.overrideSelector(selectTeas, teas);
+    const store = TestBed.inject(Store) as MockStore;
+    store.overrideSelector(selectTeas, teas);
 
-      fixture = TestBed.createComponent(TeaPage);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    })
-  );
+    fixture = TestBed.createComponent(TeaPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

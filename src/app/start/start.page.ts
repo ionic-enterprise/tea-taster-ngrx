@@ -8,7 +8,11 @@ import { NavController, Platform } from '@ionic/angular';
   styleUrls: ['./start.page.scss'],
 })
 export class StartPage implements OnInit {
-  constructor(private navController: NavController, private platform: Platform, private session: SessionVaultService) {}
+  constructor(
+    private navController: NavController,
+    private platform: Platform,
+    private session: SessionVaultService,
+  ) {}
 
   async ngOnInit() {
     if (this.platform.is('hybrid') && (await this.session.isLocked())) {

@@ -18,24 +18,22 @@ describe('TeaDetailsPage', () => {
   let component: TeaDetailsPage;
   let fixture: ComponentFixture<TeaDetailsPage>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [TeaDetailsPage],
-        imports: [IonicModule.forRoot(), FormsModule, SharedModule],
-        providers: [
-          provideMockStore<{ data: DataState }>({
-            initialState: { data: initialState },
-          }),
-          { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
-          { provide: NavController, useFactory: createNavControllerMock },
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [TeaDetailsPage],
+      imports: [IonicModule.forRoot(), FormsModule, SharedModule],
+      providers: [
+        provideMockStore<{ data: DataState }>({
+          initialState: { data: initialState },
+        }),
+        { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
+        { provide: NavController, useFactory: createNavControllerMock },
+      ],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(TeaDetailsPage);
-      component = fixture.componentInstance;
-    })
-  );
+    fixture = TestBed.createComponent(TeaDetailsPage);
+    component = fixture.componentInstance;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

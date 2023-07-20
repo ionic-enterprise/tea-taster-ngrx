@@ -186,7 +186,7 @@ describe('DataEffects', () => {
           });
         });
       });
-    })
+    }),
   );
 
   describe('teaRatingChanged$', () => {

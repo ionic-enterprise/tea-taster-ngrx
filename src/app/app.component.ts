@@ -12,7 +12,11 @@ import { SplashScreen } from '@capacitor/splash-screen';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private platform: Platform, private session: SessionVaultService, private store: Store) {}
+  constructor(
+    private platform: Platform,
+    private session: SessionVaultService,
+    private store: Store,
+  ) {}
 
   async ngOnInit() {
     Device.setHideScreenOnBackground(true);

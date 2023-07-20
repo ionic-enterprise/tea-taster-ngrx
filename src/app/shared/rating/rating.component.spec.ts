@@ -22,19 +22,17 @@ describe('RatingComponent', () => {
   let ratingEl: HTMLElement;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [RatingComponent, TestHostComponent],
-        imports: [FormsModule, IonicModule],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [RatingComponent, TestHostComponent],
+      imports: [FormsModule, IonicModule],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(TestHostComponent);
-      hostComponent = fixture.componentInstance;
-      ratingEl = fixture.nativeElement.querySelector('app-rating');
-      fixture.detectChanges();
-    })
-  );
+    fixture = TestBed.createComponent(TestHostComponent);
+    hostComponent = fixture.componentInstance;
+    ratingEl = fixture.nativeElement.querySelector('app-rating');
+    fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(hostComponent).toBeTruthy();

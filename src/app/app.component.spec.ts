@@ -11,19 +11,17 @@ import { createSessionVaultServiceMock } from './core/testing';
 import { startup } from './store/actions';
 
 describe('AppComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [AppComponent],
-        providers: [
-          provideMockStore(),
-          { provide: Platform, useFactory: createPlatformMock },
-          { provide: SessionVaultService, useFactory: createSessionVaultServiceMock },
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [AppComponent],
+      providers: [
+        provideMockStore(),
+        { provide: Platform, useFactory: createPlatformMock },
+        { provide: SessionVaultService, useFactory: createSessionVaultServiceMock },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);

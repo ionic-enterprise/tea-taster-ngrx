@@ -16,48 +16,46 @@ describe('TastingNoteEditorComponent', () => {
   let component: TastingNoteEditorComponent;
   let fixture: ComponentFixture<TastingNoteEditorComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [TastingNoteEditorComponent],
-        imports: [FormsModule, IonicModule, SharedModule],
-        providers: [
-          provideMockStore<{ data: DataState }>({
-            initialState: { data: initialState },
-          }),
-          {
-            provide: ModalController,
-            useFactory: () => createOverlayControllerMock('ModalController'),
-          },
-          {
-            provide: Platform,
-            useFactory: createPlatformMock,
-          },
-        ],
-      }).compileComponents();
-
-      const store = TestBed.inject(Store) as MockStore;
-      store.overrideSelector(selectTeas, [
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [TastingNoteEditorComponent],
+      imports: [FormsModule, IonicModule, SharedModule],
+      providers: [
+        provideMockStore<{ data: DataState }>({
+          initialState: { data: initialState },
+        }),
         {
-          id: 7,
-          name: 'White',
-          image: 'assets/img/white.jpg',
-          description: 'White tea description.',
-          rating: 5,
+          provide: ModalController,
+          useFactory: () => createOverlayControllerMock('ModalController'),
         },
         {
-          id: 8,
-          name: 'Yellow',
-          image: 'assets/img/yellow.jpg',
-          description: 'Yellow tea description.',
-          rating: 3,
+          provide: Platform,
+          useFactory: createPlatformMock,
         },
-      ]);
+      ],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(TastingNoteEditorComponent);
-      component = fixture.componentInstance;
-    })
-  );
+    const store = TestBed.inject(Store) as MockStore;
+    store.overrideSelector(selectTeas, [
+      {
+        id: 7,
+        name: 'White',
+        image: 'assets/img/white.jpg',
+        description: 'White tea description.',
+        rating: 5,
+      },
+      {
+        id: 8,
+        name: 'Yellow',
+        image: 'assets/img/yellow.jpg',
+        description: 'Yellow tea description.',
+        rating: 3,
+      },
+    ]);
+
+    fixture = TestBed.createComponent(TastingNoteEditorComponent);
+    component = fixture.componentInstance;
+  }));
 
   it('should create', () => {
     fixture.detectChanges();
@@ -151,7 +149,7 @@ describe('TastingNoteEditorComponent', () => {
               rating: 1,
               notes: 'ick',
             },
-          })
+          }),
         );
       });
 
@@ -195,7 +193,7 @@ describe('TastingNoteEditorComponent', () => {
               rating: 1,
               notes: 'ick',
             },
-          })
+          }),
         );
       });
 

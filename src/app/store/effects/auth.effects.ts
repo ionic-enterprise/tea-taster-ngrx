@@ -29,10 +29,10 @@ export class AuthEffects {
         from(this.performLogin(action.mode)).pipe(
           mergeMap(() => this.auth.getUserInfo()),
           map((user) => loginSuccess({ user })),
-          catchError(() => of(loginFailure({ errorMessage: 'Unknown error in login' })))
-        )
-      )
-    )
+          catchError(() => of(loginFailure({ errorMessage: 'Unknown error in login' }))),
+        ),
+      ),
+    ),
   );
 
   unlockSession$ = createEffect(() =>
@@ -42,10 +42,10 @@ export class AuthEffects {
         from(this.sessionVault.unlock()).pipe(
           mergeMap(() => this.auth.getUserInfo()),
           map((user) => unlockSessionSuccess({ user })),
-          catchError(() => of(unlockSessionFailure()))
-        )
-      )
-    )
+          catchError(() => of(unlockSessionFailure())),
+        ),
+      ),
+    ),
   );
 
   logout$ = createEffect(() =>
@@ -55,28 +55,28 @@ export class AuthEffects {
         from(this.auth.logout()).pipe(
           tap(() => this.sessionVault.clearSession()),
           map(() => logoutSuccess()),
-          catchError(() => of(logoutFailure({ errorMessage: 'Unknown error in logout' })))
-        )
-      )
-    )
+          catchError(() => of(logoutFailure({ errorMessage: 'Unknown error in logout' }))),
+        ),
+      ),
+    ),
   );
 
   navigateToLogin$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(logoutSuccess, sessionLocked),
-        tap(() => this.navController.navigateRoot(['/', 'login']))
+        tap(() => this.navController.navigateRoot(['/', 'login'])),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   navigateToRoot$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(loginSuccess, unlockSessionSuccess),
-        tap(() => this.navController.navigateRoot(['/']))
+        tap(() => this.navController.navigateRoot(['/'])),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   unauthError$ = createEffect(() =>
@@ -85,15 +85,15 @@ export class AuthEffects {
       tap(() => {
         this.sessionVault.clearSession();
       }),
-      map(() => logoutSuccess())
-    )
+      map(() => logoutSuccess()),
+    ),
   );
 
   constructor(
     private actions$: Actions,
     private auth: AuthenticationService,
     private navController: NavController,
-    private sessionVault: SessionVaultService
+    private sessionVault: SessionVaultService,
   ) {}
 
   private async performLogin(mode: UnlockMode): Promise<void> {

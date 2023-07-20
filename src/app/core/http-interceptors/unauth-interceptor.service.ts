@@ -17,8 +17,8 @@ export class UnauthInterceptor implements HttpInterceptor {
           if (err instanceof HttpErrorResponse && err.status === 401) {
             this.store.dispatch(unauthError());
           }
-        }
-      )
+        },
+      ),
     );
   }
 }

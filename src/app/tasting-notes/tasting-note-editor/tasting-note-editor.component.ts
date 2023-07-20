@@ -23,7 +23,11 @@ export class TastingNoteEditorComponent implements OnInit {
 
   teaCategories$: Observable<Array<Tea>>;
 
-  constructor(private modalController: ModalController, private platform: Platform, private store: Store) {}
+  constructor(
+    private modalController: ModalController,
+    private platform: Platform,
+    private store: Store,
+  ) {}
 
   get title(): string {
     return this.note ? 'Tasting Note' : 'Add New Tasting Note';

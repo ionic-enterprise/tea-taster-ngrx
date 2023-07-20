@@ -23,27 +23,27 @@ export const sessionUnlocked = createAction('[Vault API] session unlocked');
 export const initialLoadSuccess = createAction('[Data API] initial data load success', props<{ teas: Array<Tea> }>());
 export const initialLoadFailure = createAction(
   '[Data API] initial data load failure',
-  props<{ errorMessage: string }>()
+  props<{ errorMessage: string }>(),
 );
 
 export const teaDetailsChangeRating = createAction(
   '[Tea Details Page] change rating',
-  props<{ tea: Tea; rating: number }>()
+  props<{ tea: Tea; rating: number }>(),
 );
 export const teaDetailsChangeRatingSuccess = createAction('[Data API] change rating success', props<{ tea: Tea }>());
 export const teaDetailsChangeRatingFailure = createAction(
   '[Data API] change rating failure',
-  props<{ errorMessage: string }>()
+  props<{ errorMessage: string }>(),
 );
 
 export const notesPageLoaded = createAction('[Notes Page] loaded');
 export const notesPageLoadedSuccess = createAction(
   '[Data API] notes page loaded success',
-  props<{ notes: Array<TastingNote> }>()
+  props<{ notes: Array<TastingNote> }>(),
 );
 export const notesPageLoadedFailure = createAction(
   '[Data API] notes page loaded failure',
-  props<{ errorMessage: string }>()
+  props<{ errorMessage: string }>(),
 );
 
 export const noteSaved = createAction('[Note Editor] note saved', props<{ note: TastingNote }>());

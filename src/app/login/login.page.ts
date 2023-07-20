@@ -41,7 +41,7 @@ export class LoginPage implements OnInit {
     private platform: Platform,
     private sessionVault: SessionVaultService,
     private store: Store,
-    private zone: NgZone
+    private zone: NgZone,
   ) {}
 
   async ngOnInit(): Promise<void> {

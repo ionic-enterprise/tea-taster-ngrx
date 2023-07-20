@@ -23,7 +23,11 @@ export class AuthenticationService {
   private initializing: Promise<void> | undefined;
 
   // @ts-ignore
-  constructor(vaultService: SessionVaultService, platform: Platform, private ngZone: NgZone) {
+  constructor(
+    vaultService: SessionVaultService,
+    platform: Platform,
+    private ngZone: NgZone,
+  ) {
     this.isNative = platform.is('hybrid');
     this.authOptions = this.isNative ? mobileAuthConfig : webAuthConfig;
     this.vaultService = vaultService;

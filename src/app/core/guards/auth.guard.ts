@@ -5,7 +5,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
 
 export const authGuard: CanActivateFn = async (
   route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot
+  state: RouterStateSnapshot,
 ): Promise<boolean> => {
   const authentication = inject(AuthenticationService);
   const navController = inject(NavController);

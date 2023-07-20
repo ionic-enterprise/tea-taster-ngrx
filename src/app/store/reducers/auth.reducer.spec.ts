@@ -25,8 +25,8 @@ describe('Login', () => {
           loading: false,
           errorMessage: 'Invalid Email or Password',
         },
-        action
-      )
+        action,
+      ),
     ).toEqual({
       loading: true,
       errorMessage: '',
@@ -105,7 +105,7 @@ describe('logout actions', () => {
         firstName: 'Douglas',
         lastName: 'Adams',
         email: 'solong@thanksforthefish.com',
-      })
+      }),
   );
 
   describe('Logout', () => {
@@ -118,8 +118,8 @@ describe('logout actions', () => {
             loading: false,
             errorMessage: 'this is useless information',
           },
-          action
-        )
+          action,
+        ),
       ).toEqual({
         user,
         loading: true,
@@ -166,8 +166,8 @@ describe('logout actions', () => {
             loading: false,
             errorMessage: '',
           },
-          action
-        )
+          action,
+        ),
       ).toEqual({ loading: false, errorMessage: '' });
     });
   });

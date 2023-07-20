@@ -119,7 +119,7 @@ describe('AuthEffects', () => {
             firstName: 'Ken',
             lastName: 'Sodemann',
             email: 'test@test.com',
-          })
+          }),
         );
         actions$ = of(login({}));
         effects.login$.subscribe((action) => {
@@ -193,7 +193,7 @@ describe('AuthEffects', () => {
             firstName: 'Ken',
             lastName: 'Sodemann',
             email: 'test@test.com',
-          })
+          }),
         );
         actions$ = of(unlockSession());
         effects.unlockSession$.subscribe((action) => {
@@ -319,7 +319,7 @@ describe('AuthEffects', () => {
           done();
         });
       });
-    })
+    }),
   );
 
   [logoutSuccess(), sessionLocked()].forEach((action) =>
@@ -333,7 +333,7 @@ describe('AuthEffects', () => {
           done();
         });
       });
-    })
+    }),
   );
 
   describe('unauthError$', () => {

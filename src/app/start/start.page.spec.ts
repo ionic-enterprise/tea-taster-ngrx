@@ -10,22 +10,20 @@ describe('StartPage', () => {
   let component: StartPage;
   let fixture: ComponentFixture<StartPage>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [StartPage],
-        imports: [IonicModule.forRoot()],
-        providers: [
-          { provide: NavController, useFactory: createNavControllerMock },
-          { provide: SessionVaultService, useFactory: createSessionVaultServiceMock },
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [StartPage],
+      imports: [IonicModule.forRoot()],
+      providers: [
+        { provide: NavController, useFactory: createNavControllerMock },
+        { provide: SessionVaultService, useFactory: createSessionVaultServiceMock },
+      ],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(StartPage);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    })
-  );
+    fixture = TestBed.createComponent(StartPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

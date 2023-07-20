@@ -16,7 +16,10 @@ export class TeaDetailsPage implements OnInit {
   rating: number;
   tea$: Observable<Tea>;
 
-  constructor(private route: ActivatedRoute, private store: Store) {}
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store,
+  ) {}
 
   ngOnInit() {
     const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);

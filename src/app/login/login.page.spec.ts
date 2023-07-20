@@ -17,30 +17,29 @@ describe('LoginPage', () => {
   let component: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
 
-  beforeEach(
-    waitForAsync(() => {
-      alert = createOverlayElementMock('Alert');
-      TestBed.configureTestingModule({
-        declarations: [LoginPage],
-        imports: [FormsModule, IonicModule],
-        providers: [
-          provideMockStore<{ auth: AuthState }>({
-            initialState: { auth: initialState },
-          }),
-          {
-            provide: AlertController,
-            useFactory: () => createOverlayControllerMock('AlertController', alert),
-          },
-          {
-            provide: Platform,
-            useFactory: createPlatformMock,
-          },
-          {
-            provide: SessionVaultService,
-            useFactory: createSessionVaultServiceMock,
-          },
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    alert = createOverlayElementMock('Alert');
+    TestBed.configureTestingModule({
+      declarations: [LoginPage],
+      imports: [FormsModule, IonicModule],
+      providers: [
+        provideMockStore<{ auth: AuthState }>({
+          initialState: { auth: initialState },
+        }),
+        {
+          provide: AlertController,
+          useFactory: () => createOverlayControllerMock('AlertController', alert),
+        },
+        {
+          provide: Platform,
+          useFactory: createPlatformMock,
+        },
+        {
+          provide: SessionVaultService,
+          useFactory: createSessionVaultServiceMock,
+        },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LoginPage);
     component = fixture.componentInstance;
@@ -69,7 +68,7 @@ describe('LoginPage', () => {
         expect(dispatchSpy).toHaveBeenCalledWith(
           login({
             mode: 'SessionPIN',
-          })
+          }),
         );
       });
     });

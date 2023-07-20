@@ -13,25 +13,23 @@ describe('AboutPage', () => {
   let component: AboutPage;
   let fixture: ComponentFixture<AboutPage>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [AboutPage],
-        imports: [IonicModule],
-        providers: [
-          provideMockStore(),
-          {
-            provide: AuthenticationService,
-            useFactory: createAuthenticationServiceMock,
-          },
-        ],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [AboutPage],
+      imports: [IonicModule],
+      providers: [
+        provideMockStore(),
+        {
+          provide: AuthenticationService,
+          useFactory: createAuthenticationServiceMock,
+        },
+      ],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(AboutPage);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    })
-  );
+    fixture = TestBed.createComponent(AboutPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

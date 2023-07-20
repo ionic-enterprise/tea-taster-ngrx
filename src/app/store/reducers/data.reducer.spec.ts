@@ -218,5 +218,5 @@ it('returns the default state', () => {
 ].forEach((test) =>
   it(test.description, () => {
     expect(reducer(createState(test.begin), test.action)).toEqual(createState(test.end));
-  })
+  }),
 );

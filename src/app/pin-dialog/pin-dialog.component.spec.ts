@@ -10,21 +10,19 @@ describe('PinDialogComponent', () => {
   let component: PinDialogComponent;
   let fixture: ComponentFixture<PinDialogComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [PinDialogComponent],
-        imports: [FormsModule, IonicModule],
-        providers: [
-          {
-            provide: ModalController,
-            useFactory: () => createOverlayControllerMock('Modal'),
-          },
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [PinDialogComponent],
+      imports: [FormsModule, IonicModule],
+      providers: [
+        {
+          provide: ModalController,
+          useFactory: () => createOverlayControllerMock('Modal'),
+        },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PinDialogComponent);

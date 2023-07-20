@@ -21,7 +21,7 @@ export const reducer = createReducer(
       ...state,
       loading: true,
       errorMessage: '',
-    })
+    }),
   ),
   on(
     Actions.loginSuccess,
@@ -29,7 +29,7 @@ export const reducer = createReducer(
       ...state,
       user,
       loading: false,
-    })
+    }),
   ),
   on(
     Actions.loginFailure,
@@ -37,7 +37,7 @@ export const reducer = createReducer(
       ...state,
       loading: false,
       errorMessage,
-    })
+    }),
   ),
   on(
     Actions.logout,
@@ -45,7 +45,7 @@ export const reducer = createReducer(
       ...state,
       loading: true,
       errorMessage: '',
-    })
+    }),
   ),
   on(Actions.logoutSuccess, (state): AuthState => {
     const { user, ...newState } = {
@@ -60,7 +60,7 @@ export const reducer = createReducer(
       ...state,
       loading: false,
       errorMessage,
-    })
+    }),
   ),
   on(Actions.unauthError, (state): AuthState => {
     const { user, ...newState } = state;
@@ -75,6 +75,6 @@ export const reducer = createReducer(
     (state, { user }): AuthState => ({
       ...state,
       user,
-    })
-  )
+    }),
+  ),
 );

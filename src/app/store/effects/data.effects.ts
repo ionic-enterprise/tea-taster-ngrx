@@ -37,12 +37,12 @@ export class DataEffects {
             of(
               initialLoadFailure({
                 errorMessage: 'Error in data load, check server logs',
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   teaRatingChanged$ = createEffect(() =>
@@ -53,18 +53,18 @@ export class DataEffects {
           map(() =>
             teaDetailsChangeRatingSuccess({
               tea: { ...action.tea, rating: action.rating },
-            })
+            }),
           ),
           catchError((err) =>
             of(
               teaDetailsChangeRatingFailure({
                 errorMessage: err.message || 'Unknown error in rating save',
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   notesPageLoaded$ = createEffect(() =>
@@ -77,12 +77,12 @@ export class DataEffects {
             of(
               notesPageLoadedFailure({
                 errorMessage: 'Error in data load, check server logs',
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   noteSaved$ = createEffect(() =>
@@ -95,12 +95,12 @@ export class DataEffects {
             of(
               noteSavedFailure({
                 errorMessage: 'Error in data load, check server logs',
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   noteDeleted$ = createEffect(() =>
@@ -113,18 +113,18 @@ export class DataEffects {
             of(
               noteDeletedFailure({
                 errorMessage: 'Error in data load, check server logs',
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   constructor(
     private actions$: Actions,
     private auth: AuthenticationService,
     private tastingNotesService: TastingNotesService,
-    private teaService: TeaService
+    private teaService: TeaService,
   ) {}
 }
