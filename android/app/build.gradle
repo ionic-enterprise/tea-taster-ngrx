@@ -1,7 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "io.ionic.teatasterng"
+
+  packagingOptions {
+    resources {
+      excludes += ['META-INF/NOTICE', 'META-INF/LICENSE']
+    }
+  }
+  namespace "io.ionic.teatasterng"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "io.ionic.teatasterng"
@@ -16,7 +22,7 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
         manifestPlaceholders = [
-            'AUTH_URL_SCHEME': 'msauth'
+            'AUTH_URL_SCHEME': 'io.ionic.teataster'
         ]
     }
     buildTypes {
