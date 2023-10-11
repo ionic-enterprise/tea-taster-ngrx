@@ -25,8 +25,12 @@
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
 
+html {
+  --ion-dynamic-font: var(--ion-default-dynamic-font);
+}
+
 .error-message {
-  padding: 2em;
+  padding: 2rem;
   color: var(--ion-color-danger, #ff0000);
 }
 
@@ -67,5 +71,5 @@ ion-select::part(icon) {
 }
 
 ion-select::part(text) {
-  margin-right: 1em;
+  margin-right: 1rem;
 }

@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
 
-  packagingOptions {
-    resources {
-      excludes += ['META-INF/NOTICE', 'META-INF/LICENSE']
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/NOTICE', 'META-INF/LICENSE']
+        }
     }
-  }
-  namespace "io.ionic.teatasterng"
+    namespace "io.ionic.teatasterng"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "io.ionic.teatasterng"
